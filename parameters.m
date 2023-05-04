@@ -1,3 +1,6 @@
+% We have assumed Quanser hub
+
+
 %% General parameters and conversion gains
 
 % conversion gains
@@ -47,12 +50,11 @@ gbox.J = 3*gbox.J72; % total inertia (at gearbox output)
 %% Mechanical load (mld) nominal parameters
 
 % hub params
-mld.Jh = 5.1e-4; % moment of inertia
+mld.Jh = 6.84e-4; % moment of inertia
 mld.Bh = 2.5e-4; % viscous friction coeff
-mld.tausf = 8.2e-03; % static friction (estimated)
 
 % beam & elastic joint params
-mld.Jb = 2.0e-3; % moment of inertia
+mld.Jb = 1.4e-3; % moment of inertia
 mld.d = 5.0e-2; % flex joint damping coeff (estimated)
 mld.wn = 24.5; % flex joint natural freq (estimated)
 mld.Bb = mld.Jb * 2*mld.d*mld.wn; % beam viscous friction
@@ -60,7 +62,9 @@ mld.k = mld.Jb * mld.wn^2; % flex joint stiffness
 
 
 Beq = 1.9610e-06; % (estimated)
-Jeq = 8.4138e-07; % (estimated)
+mld.tausf = 8.2e-03; % static friction (estimated)
+Jeq = mot.J + mld.Jh/(gbox.N)^2; % (computed)
+
 %% Voltage driver nominal parameters
 
 % op−amp circuit params
@@ -121,3 +125,16 @@ daq.dac.q = 2*daq.dac.fs/(2^daq.dac.bits-1); % quantization
 daq.adc.bits = 16; % resolution (bits)
 daq.adc.fs = 10; % full scale (as set in SLDRT Analog Input block)
 daq.adc.q = 2*daq.adc.fs/(2^daq.adc.bits-1); % quantization
+
+
+%% Filter parameters
+
+omega_c = 2*pi*50;
+d = 1/sqrt(2);
+
+%% other parameters
+
+Req = sens.curr.Rs + mot.R;
+
+Km = drv.dcgain*mot.Kt/((Req*Beq)+mot.Kt*mot.Ke);
+Tm = (Req*Jeq)/((Req*Beq)+mot.Kt*mot.Ke);
