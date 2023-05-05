@@ -9,7 +9,6 @@ ts_star = 0.85;                                         % settling time
 %% scripts
 
 parameters;
+positionpid;
 
-% positionpid;
-
-stateSpace_design;
+%stateSpace_design;
