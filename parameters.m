@@ -65,6 +65,7 @@ Beq = 1.9610e-06; % (estimated)
 mld.tausf = 8.2e-03; % static friction (estimated)
 Jeq = mot.J + mld.Jh/(gbox.N)^2; % (computed)
 
+
 %% Voltage driver nominal parameters
 
 % op−amp circuit params
