@@ -24,11 +24,6 @@ Ki = Kp/Ti;
 
 
 
-
-
-
-
-
 %%
 
 [PID, info] = pidtune(sysP, 'PIDF', omega_gc);
