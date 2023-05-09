@@ -1,4 +1,3 @@
-
 ts_star = 0.85;
 Mp = 0.30;
 alpha = 4;
