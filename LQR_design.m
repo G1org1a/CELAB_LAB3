@@ -22,7 +22,6 @@ plot([-100, 0], [-100*phi, 0], 'k--');
 
 axis([-60 60 -60 60]);
 
-
 sys_test = 1+4*sysG*sysGp; %prende 2 su 4 zeri significativi
 [Z, P, K] = zpkdata(sys_test);
 
