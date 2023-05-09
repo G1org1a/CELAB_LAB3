@@ -11,7 +11,7 @@ B_eq = Beq;
 %k_m = (drv.dcgain*mot.Kt)/(R_eq*B_eq + mot.Kt*mot.Ke);
 
 %T_m = R_eq*Jeq/(R_eq*B_eq + mot.Kt*mot.Ke);
-
+ 
 %% Collocated system for hub
 %num = [mld.Jb mld.Bb mld.k];
 %den = gbox.N*[Jeq*mld.Jb (Jeq*mld.Bb + mld.Jb*B_eq) (B_eq*mld.Bb + mld.k*(Jeq + mld.Jb/(gbox.N^2))) mld.k*(B_eq + mld.Bb/(mld.Bb/gbox.N^2)) 0];
