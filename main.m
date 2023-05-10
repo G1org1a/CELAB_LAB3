@@ -10,8 +10,12 @@ ts_star = 0.85;                                         % settling time
 
 parameters;
 
-pid_calibration;
+%pid_calibration;
 
-%stateSpace_design;
+%stateSpace_Nominal;
+
+%stateSpace_Integral;
 
 %LQR_design;
+
+LQR_Bryson;
