@@ -2,7 +2,7 @@ delta = log(1/Mp)/sqrt(pi^2 + (log(1/Mp)^2));
 w_gc = 3/(delta*ts_star);
 phi_m = atan(2*delta/sqrt(sqrt(1+4*delta^4) - 2*delta^2));
 
-alpha = 15;
+alpha = 16;
 
 
 PID.Tl = 1/(5*w_gc);
