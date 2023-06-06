@@ -18,7 +18,7 @@ sysP = (1/(gbox.N*s))*(drv.dcgain*mot.Kt)*(mld.Jb*s^2 + mld.Bb*s + mld.k)/(Req*s
 
 pid_calibration;
 
-%stateSpace_Nominal;
+stateSpace_Nominal;
 
 %stateSpace_Integral;
 
