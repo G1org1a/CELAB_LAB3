@@ -46,20 +46,23 @@ for i = 1:length(locations_2)
     end
 end
 
-locations_pos = locations_new(1:2:12);
-peaks_pos = peaks_new(1:2:12);
-
-locations_neg = locations_new(2:2:12);
-peaks_neg = peaks_new(2:2:12);
-
-figure(2);
-plot(osc_mean);
-hold on;
-scatter(locations_pos, peaks_pos);
-hold off;
+% locations_pos = locations_new(1:2:12);
+% peaks_pos = peaks_new(1:2:12);
+% 
+% locations_neg = locations_new(2:2:12);
+% peaks_neg = peaks_new(2:2:12);
+% 
+% figure(2);
+% plot(osc_mean);
+% hold on;
+% scatter(locations_pos, peaks_pos);
+% hold off;
 
 
 %% stima 
+
+locations_pos = locations_new;
+peaks_pos = peaks_new;
 
 k = 0:1:length(peaks_pos)-1;
 
@@ -87,43 +90,43 @@ w_stim = mean(omegaK)
 
 wn_stim = w_stim / sqrt(1-delta_pos^2)
 
-Bbpos = mld.Jb * (2*delta_pos*wn_stim) % 3.4e-3
-kpos = mld.Jb*wn_stim^2 % 0.83
+Bb = mld.Jb * (2*delta_pos*wn_stim) % 3.4e-3
+k = mld.Jb*wn_stim^2 % 0.83
 
 %% neg
-
-kneg = 0:1:length(peaks_neg)-1;
-
-tkneg = locations_neg;
-LAthetaneg = log(peaks_neg);
-
-PHIKneg = [-kneg' ones(size(kneg))'];
-YPSILONneg = LAthetaneg';
-
-theta_neg = inv(PHIKneg'*PHIKneg)*PHIKneg'*YPSILONneg;
-%plot(tk, LAtheta);
-
-csineg = theta_neg(1);
-
-delta_neg = csineg/ (sqrt(pi^2 + csineg^2));
-
-Tkneg = [locations_neg(1)/1000];
-for i = 2:length(locations_neg)
-    Tkneg = [Tkneg, (locations_neg(i)-locations_neg(i-1))/1000];
-end
-
-
-omegaKneg = pi./Tkneg
-
-w_stimneg = mean(omegaKneg)
-
-wn_stimneg = w_stimneg / sqrt(1-delta_neg^2)
-
-Bbneg = mld.Jb * (2*delta_neg*wn_stimneg) % 3.4e-3
-kneg = mld.Jb*wn_stimneg^2 % 0.83
+% 
+% kneg = 0:1:length(peaks_neg)-1;
+% 
+% tkneg = locations_neg;
+% LAthetaneg = log(peaks_neg);
+% 
+% PHIKneg = [-kneg' ones(size(kneg))'];
+% YPSILONneg = LAthetaneg';
+% 
+% theta_neg = inv(PHIKneg'*PHIKneg)*PHIKneg'*YPSILONneg;
+% %plot(tk, LAtheta);
+% 
+% csineg = theta_neg(1);
+% 
+% delta_neg = csineg/ (sqrt(pi^2 + csineg^2));
+% 
+% Tkneg = [locations_neg(1)/1000];
+% for i = 2:length(locations_neg)
+%     Tkneg = [Tkneg, (locations_neg(i)-locations_neg(i-1))/1000];
+% end
+% 
+% 
+% omegaKneg = pi./Tkneg
+% 
+% w_stimneg = mean(omegaKneg)
+% 
+% wn_stimneg = w_stimneg / sqrt(1-delta_neg^2)
+% 
+% Bbneg = mld.Jb * (2*delta_neg*wn_stimneg) % 3.4e-3
+% kneg = mld.Jb*wn_stimneg^2 % 0.83
 
 %%  media
 
-kf = (kneg+kpos)/2
-
-Bb = (Bbpos + Bbneg)/2
+% kf = (kneg+kpos)/2
+% 
+% Bb = (Bbpos + Bbneg)/2
