@@ -5,11 +5,11 @@ parameters;
 
 load("data/thd_for_estimation.mat")
 
-delta= 0.05;
-omegaN = 24.4;
-thetaD0 = 30;
-thetaD0prime = 0;
-sigma = -delta*omegaN;
+% delta= 0.05;
+% omegaN = 24.4;
+% thetaD0 = 30;
+% thetaD0prime = 0;
+% sigma = -delta*omegaN;
 
 %% calcoli
 
