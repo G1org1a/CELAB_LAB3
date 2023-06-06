@@ -4,43 +4,45 @@ clear
 parameters;
 
 load("data/thd_for_estimation.mat")
-
-delta= 0.05;
-omegaN = 24.4;
-thetaD0 = 30;
-thetaD0prime = 0;
-sigma = -delta*omegaN;
+load("data/picchi_cris.mat")
+figure(200);
+plot(meas.time, meas.signals.values);
+hold on;
 
 %% calcoli
 
-values = thd.signals.values;
-time = thd.time;
+values = meas.signals.values;
+time = meas.time;
 
-%plot(time, values);
-
-data_osc = values(1920:3750);
+data_osc = values(5400:7000);
 osc_mean = abs(movmean(data_osc, 9));
 
-data_bias = values(3750:end);
+data_bias = values(7500:end);
 bias_mean = mean(data_bias);
 
-plot(time(1920:3750), abs(osc_mean-bias_mean));
 
-[peaks, locations] = findpeaks(osc_mean);
+%% codice tutor
+[bbb,aaa] = butter(2,30/500);
+data_filt = filtfilt(bbb,aaa,data_osc);
+[peaks_2, locations_2] = findpeaks(abs(data_filt));
+
+figure(1)
+plot(abs(data_filt));hold on;
+scatter(locations_2, peaks_2);
 
 
 locations_new = [];
 peaks_new = [];
 
-for i = 1:length(locations)
-    if(i+1 <= length(locations))
-        if(locations(i) + 20 < locations(i+1))
-            locations_new = [locations_new, locations(i)];
-            peaks_new = [peaks_new, peaks(i)];
+for i = 1:length(locations_2)
+    if(i+1 <= length(locations_2))
+        if(locations_2(i) + 20 < locations_2(i+1))
+            locations_new = [locations_new, locations_2(i)];
+            peaks_new = [peaks_new, peaks_2(i)];
         end
     else
-            locations_new = [locations_new, locations(i)];
-            peaks_new = [peaks_new, peaks(i)];
+            locations_new = [locations_new, locations_2(i)];
+            peaks_new = [peaks_new, peaks_2(i)];
     end
 end
 
@@ -50,49 +52,24 @@ peaks_pos = peaks_new(1:2:12);
 locations_neg = locations_new(2:2:12);
 peaks_neg = peaks_new(2:2:12);
 
-figure(10);
+figure(2);
 plot(osc_mean);
 hold on;
-scatter(locations_neg, peaks_neg);
+scatter(locations_pos, peaks_pos);
 hold off;
 
-%% codice tutor
-[bbb,aaa] = butter(2,30/500);
-data_filt = filtfilt(bbb,aaa,data_osc);
-[peaks_2, locations_2] = findpeaks(abs(data_filt));
-
-figure(100)
-% plot(abs(data_osc)); hold on;
-% plot(osc_mean); hold on;
-plot(abs(data_filt));hold on;
-scatter(locations_2, peaks_2);
-
-%plot(locations, peaks);
-
-%%
-
-% omega = omegaN*sqrt(1-delta^2);
-% Phi = atan((sigma*thetaD0-thetaD0prime)/(omega*thetaD0));
-% A = sqrt(thetaD0^2 + ((thetaD0prime-sigma*thetaD0)/omega)^2);
-% 
-% t = 0:0.001:1.5;
-% thetaD =A*exp(sigma*t).*cos(omega*t+Phi);
-
-%%plot(t, thetaD);
 
 %% stima 
-
 
 k = 0:1:length(peaks_pos)-1;
 
 tk = locations_pos;
-LAtheta = peaks_pos;
+LAtheta = log(peaks_pos);
 
 PHIK = [-k' ones(size(k))'];
 YPSILON = LAtheta';
 
 theta_pos = inv(PHIK'*PHIK)*PHIK'*YPSILON;
-%plot(tk, LAtheta);
 
 csi = theta_pos(1);
 
@@ -108,9 +85,9 @@ omegaK = pi./Tk
 
 w_stim = mean(omegaK)
 
-wn_stim = w_stim / sqrt(1-delta_pos)
+wn_stim = w_stim / sqrt(1-delta_pos^2)
 
-Bb = mld.Jb * (2*delta_pos*wn_stim) % 3.4e-3
+Bbpos = mld.Jb * (2*delta_pos*wn_stim) % 3.4e-3
 kpos = mld.Jb*wn_stim^2 % 0.83
 
 %% neg
@@ -118,7 +95,7 @@ kpos = mld.Jb*wn_stim^2 % 0.83
 kneg = 0:1:length(peaks_neg)-1;
 
 tkneg = locations_neg;
-LAthetaneg = peaks_neg;
+LAthetaneg = log(peaks_neg);
 
 PHIKneg = [-kneg' ones(size(kneg))'];
 YPSILONneg = LAthetaneg';
@@ -140,7 +117,7 @@ omegaKneg = pi./Tkneg
 
 w_stimneg = mean(omegaKneg)
 
-wn_stimneg = w_stimneg / sqrt(1-delta_neg)
+wn_stimneg = w_stimneg / sqrt(1-delta_neg^2)
 
 Bbneg = mld.Jb * (2*delta_neg*wn_stimneg) % 3.4e-3
 kneg = mld.Jb*wn_stimneg^2 % 0.83
@@ -149,4 +126,4 @@ kneg = mld.Jb*wn_stimneg^2 % 0.83
 
 kf = (kneg+kpos)/2
 
-Bb = (Bb + Bbneg)/2
+Bb = (Bbpos + Bbneg)/2
