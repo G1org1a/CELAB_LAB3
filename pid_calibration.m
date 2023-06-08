@@ -1,6 +1,6 @@
 delta = log(1/Mp)/sqrt(pi^2 + (log(1/Mp)^2));
 w_gc = 3/(delta*ts_star);
-% phi_m = atan(2*delta/sqrt(sqrt(1+4*delta^4) - 2*delta^2));
+%phi_m = atan(2*delta/sqrt(sqrt(1+4*delta^4) - 2*delta^2));
 phi_m = 1.04 - 0.8*Mp;
 
 alpha = 10;
@@ -22,6 +22,6 @@ PID.Ki = PID.Kp / PID.Ti;
 
 
 Tw = ts_star / 5;
-Kw = 4/Tw;
+Kw = 1 / Tw;
 
 

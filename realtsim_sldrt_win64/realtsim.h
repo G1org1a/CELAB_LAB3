@@ -7,9 +7,9 @@
  *
  * Code generation for model "realtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.38
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:31:02 2023
+ * C source code generated on : Thu Jun  8 16:29:54 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -866,69 +866,82 @@
 
 /* Block signals (default storage) */
 typedef struct {
-  real_T rads2rpm;                     /* '<S3>/rads2rpm' */
+  real_T Step2;                        /* '<Root>/Step2' */
+  real_T rads2rpm;                     /* '<S4>/rads2rpm' */
+  real_T pulse2deg;                    /* '<Root>/pulse2deg' */
+  real_T rads2rpm1;                    /* '<S4>/rads2rpm1' */
   real_T Gain;                         /* '<S1>/Gain' */
   real_T Sum;                          /* '<S1>/Sum' */
-  real_T rads2rpm1;                    /* '<S3>/rads2rpm1' */
-  real_T pulse2deg;                    /* '<Root>/pulse2deg' */
-  real_T Step1;                        /* '<Root>/Step1' */
-  real_T deg2rad1;                     /* '<S3>/deg2rad1' */
-  real_T deg2rad;                      /* '<S3>/deg2rad' */
+  real_T Step3;                        /* '<Root>/Step3' */
+  real_T deg2rad1;                     /* '<S4>/deg2rad1' */
+  real_T deg2rad;                      /* '<S4>/deg2rad' */
   real_T Saturation;                   /* '<S2>/ Saturation' */
-  real_T Gain_p;                       /* '<S2>/Gain' */
-  real_T DiscreteTimeIntegrator;       /* '<S5>/Discrete-Time Integrator' */
-  boolean_T AND;                       /* '<S6>/AND' */
+  real_T Gain_c;                       /* '<S2>/Gain' */
+  real_T DiscreteTimeIntegrator;       /* '<S6>/Discrete-Time Integrator' */
+  boolean_T AND;                       /* '<S7>/AND' */
 } B_realtsim_T;
 
 /* Block states (default storage) for system '<Root>' */
 typedef struct {
-  real_T DiscreteTimeIntegrator_DSTATE;/* '<S5>/Discrete-Time Integrator' */
-  void *AnalogInput_PWORK;             /* '<Root>/Analog Input' */
-  void *EncoderInput_PWORK;            /* '<Root>/Encoder Input' */
-  void *AnalogOutput_PWORK;            /* '<Root>/Analog Output' */
+  real_T DiscreteTimeIntegrator_DSTATE;/* '<S6>/Discrete-Time Integrator' */
+  void *EncoderInput_PWORK;            /* '<S3>/Encoder Input' */
+  void *AnalogInput_PWORK;             /* '<S3>/Analog Input' */
   struct {
     void *LoggedData;
   } Scope_PWORK;                       /* '<Root>/Scope' */
 
   struct {
-    void *LoggedData;
-  } Scope_PWORK_j;                     /* '<S2>/Scope' */
+    void *LoggedData[3];
+  } Scope1_PWORK;                      /* '<Root>/Scope1' */
 
   struct {
     void *LoggedData;
-  } Scope1_PWORK;                      /* '<S2>/Scope1' */
+  } Scope2_PWORK;                      /* '<Root>/Scope2' */
 
   struct {
     void *LoggedData;
-  } Scope2_PWORK;                      /* '<S2>/Scope2' */
+  } wff_PWORK;                         /* '<Root>/w// ff' */
+
+  void *AnalogOutput_PWORK;            /* '<S3>/Analog Output' */
+  struct {
+    void *LoggedData;
+  } Scope_PWORK_f;                     /* '<S2>/Scope' */
+
+  struct {
+    void *LoggedData;
+  } Scope1_PWORK_p;                    /* '<S2>/Scope1' */
+
+  struct {
+    void *LoggedData;
+  } Scope2_PWORK_m;                    /* '<S2>/Scope2' */
 
   struct {
     void *LoggedData;
   } Scope3_PWORK;                      /* '<S2>/Scope3' */
 
-  int8_T EnabledSubsystem_SubsysRanBC; /* '<Root>/Enabled Subsystem' */
-  int8_T EnabledSubsystem_SubsysRanBC_g;/* '<S4>/Enabled Subsystem' */
-  boolean_T EnabledSubsystem_MODE;     /* '<Root>/Enabled Subsystem' */
+  int8_T StateSpaceController_SubsysRanBC;/* '<Root>/State Space Controller' */
+  int8_T EnabledSubsystem_SubsysRanBC; /* '<S5>/Enabled Subsystem' */
+  boolean_T StateSpaceController_MODE; /* '<Root>/State Space Controller' */
 } DW_realtsim_T;
 
 /* Continuous states (default storage) */
 typedef struct {
-  real_T realderivative1_CSTATE[2];    /* '<S3>/real derivative1' */
-  real_T realderivative2_CSTATE[2];    /* '<S3>/real derivative2' */
+  real_T realderivative1_CSTATE[2];    /* '<S4>/real derivative1' */
+  real_T realderivative2_CSTATE[2];    /* '<S4>/real derivative2' */
   real_T TransferFcn_CSTATE;           /* '<S2>/Transfer Fcn' */
 } X_realtsim_T;
 
 /* State derivatives (default storage) */
 typedef struct {
-  real_T realderivative1_CSTATE[2];    /* '<S3>/real derivative1' */
-  real_T realderivative2_CSTATE[2];    /* '<S3>/real derivative2' */
+  real_T realderivative1_CSTATE[2];    /* '<S4>/real derivative1' */
+  real_T realderivative2_CSTATE[2];    /* '<S4>/real derivative2' */
   real_T TransferFcn_CSTATE;           /* '<S2>/Transfer Fcn' */
 } XDot_realtsim_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T realderivative1_CSTATE[2]; /* '<S3>/real derivative1' */
-  boolean_T realderivative2_CSTATE[2]; /* '<S3>/real derivative2' */
+  boolean_T realderivative1_CSTATE[2]; /* '<S4>/real derivative1' */
+  boolean_T realderivative2_CSTATE[2]; /* '<S4>/real derivative2' */
   boolean_T TransferFcn_CSTATE;        /* '<S2>/Transfer Fcn' */
 } XDis_realtsim_T;
 
@@ -983,13 +996,13 @@ struct P_realtsim_T_ {
                                         *   '<S2>/deg2rad1'
                                         *   '<S2>/deg2rad2'
                                         *   '<S2>/deg2rad3'
-                                        *   '<S3>/deg2rad'
-                                        *   '<S3>/deg2rad1'
+                                        *   '<S4>/deg2rad'
+                                        *   '<S4>/deg2rad1'
                                         */
   real_T rads2rpm;                     /* Variable: rads2rpm
                                         * Referenced by:
-                                        *   '<S3>/rads2rpm'
-                                        *   '<S3>/rads2rpm1'
+                                        *   '<S4>/rads2rpm'
+                                        *   '<S4>/rads2rpm1'
                                         */
   real_T rpm2rads;                     /* Variable: rpm2rads
                                         * Referenced by:
@@ -997,74 +1010,74 @@ struct P_realtsim_T_ {
                                         *   '<S2>/rpm2rads2'
                                         */
   real_T AnalogOutput_FinalValue;     /* Mask Parameter: AnalogOutput_FinalValue
-                                       * Referenced by: '<Root>/Analog Output'
+                                       * Referenced by: '<S3>/Analog Output'
                                        */
   real_T AnalogOutput_InitialValue; /* Mask Parameter: AnalogOutput_InitialValue
-                                     * Referenced by: '<Root>/Analog Output'
+                                     * Referenced by: '<S3>/Analog Output'
                                      */
   real_T EncoderInput_InputFilter;   /* Mask Parameter: EncoderInput_InputFilter
-                                      * Referenced by: '<Root>/Encoder Input'
+                                      * Referenced by: '<S3>/Encoder Input'
                                       */
-  real_T AnalogInput_MaxMissedTicks;
-                                   /* Mask Parameter: AnalogInput_MaxMissedTicks
-                                    * Referenced by: '<Root>/Analog Input'
-                                    */
   real_T EncoderInput_MaxMissedTicks;
                                   /* Mask Parameter: EncoderInput_MaxMissedTicks
-                                   * Referenced by: '<Root>/Encoder Input'
+                                   * Referenced by: '<S3>/Encoder Input'
                                    */
+  real_T AnalogInput_MaxMissedTicks;
+                                   /* Mask Parameter: AnalogInput_MaxMissedTicks
+                                    * Referenced by: '<S3>/Analog Input'
+                                    */
   real_T AnalogOutput_MaxMissedTicks;
                                   /* Mask Parameter: AnalogOutput_MaxMissedTicks
-                                   * Referenced by: '<Root>/Analog Output'
+                                   * Referenced by: '<S3>/Analog Output'
                                    */
-  real_T AnalogInput_YieldWhenWaiting;
-                                 /* Mask Parameter: AnalogInput_YieldWhenWaiting
-                                  * Referenced by: '<Root>/Analog Input'
-                                  */
   real_T EncoderInput_YieldWhenWaiting;
                                 /* Mask Parameter: EncoderInput_YieldWhenWaiting
-                                 * Referenced by: '<Root>/Encoder Input'
+                                 * Referenced by: '<S3>/Encoder Input'
                                  */
+  real_T AnalogInput_YieldWhenWaiting;
+                                 /* Mask Parameter: AnalogInput_YieldWhenWaiting
+                                  * Referenced by: '<S3>/Analog Input'
+                                  */
   real_T AnalogOutput_YieldWhenWaiting;
                                 /* Mask Parameter: AnalogOutput_YieldWhenWaiting
-                                 * Referenced by: '<Root>/Analog Output'
+                                 * Referenced by: '<S3>/Analog Output'
                                  */
   real_T IntervalTest_lowlimit;        /* Mask Parameter: IntervalTest_lowlimit
-                                        * Referenced by: '<S6>/Lower Limit'
+                                        * Referenced by: '<S7>/Lower Limit'
                                         */
   real_T IntervalTest_uplimit;         /* Mask Parameter: IntervalTest_uplimit
-                                        * Referenced by: '<S6>/Upper Limit'
-                                        */
-  int32_T AnalogInput_Channels[2];     /* Mask Parameter: AnalogInput_Channels
-                                        * Referenced by: '<Root>/Analog Input'
+                                        * Referenced by: '<S7>/Upper Limit'
                                         */
   int32_T EncoderInput_Channels;       /* Mask Parameter: EncoderInput_Channels
-                                        * Referenced by: '<Root>/Encoder Input'
+                                        * Referenced by: '<S3>/Encoder Input'
+                                        */
+  int32_T AnalogInput_Channels[2];     /* Mask Parameter: AnalogInput_Channels
+                                        * Referenced by: '<S3>/Analog Input'
                                         */
   int32_T AnalogOutput_Channels;       /* Mask Parameter: AnalogOutput_Channels
-                                        * Referenced by: '<Root>/Analog Output'
+                                        * Referenced by: '<S3>/Analog Output'
                                         */
   int32_T AnalogInput_RangeMode;       /* Mask Parameter: AnalogInput_RangeMode
-                                        * Referenced by: '<Root>/Analog Input'
+                                        * Referenced by: '<S3>/Analog Input'
                                         */
   int32_T AnalogOutput_RangeMode;      /* Mask Parameter: AnalogOutput_RangeMode
-                                        * Referenced by: '<Root>/Analog Output'
+                                        * Referenced by: '<S3>/Analog Output'
                                         */
   int32_T AnalogInput_VoltRange;       /* Mask Parameter: AnalogInput_VoltRange
-                                        * Referenced by: '<Root>/Analog Input'
+                                        * Referenced by: '<S3>/Analog Input'
                                         */
   int32_T AnalogOutput_VoltRange;      /* Mask Parameter: AnalogOutput_VoltRange
-                                        * Referenced by: '<Root>/Analog Output'
+                                        * Referenced by: '<S3>/Analog Output'
                                         */
   real_T Out_Y0;                       /* Computed Parameter: Out_Y0
-                                        * Referenced by: '<S5>/Out'
+                                        * Referenced by: '<S6>/Out'
                                         */
   real_T DiscreteTimeIntegrator_gainval;
                            /* Computed Parameter: DiscreteTimeIntegrator_gainval
-                            * Referenced by: '<S5>/Discrete-Time Integrator'
+                            * Referenced by: '<S6>/Discrete-Time Integrator'
                             */
   real_T DiscreteTimeIntegrator_IC;    /* Expression: 0
-                                        * Referenced by: '<S5>/Discrete-Time Integrator'
+                                        * Referenced by: '<S6>/Discrete-Time Integrator'
                                         */
   real_T uV_Y0;                        /* Computed Parameter: uV_Y0
                                         * Referenced by: '<S2>/u [V]'
@@ -1081,35 +1094,35 @@ struct P_realtsim_T_ {
   real_T Saturation_LowerSat;          /* Expression: -12
                                         * Referenced by: '<S2>/ Saturation'
                                         */
-  real_T Step_Time;                    /* Expression: 1
-                                        * Referenced by: '<Root>/Step'
+  real_T Step2_Time;                   /* Expression: 1
+                                        * Referenced by: '<Root>/Step2'
                                         */
-  real_T Step_Y0;                      /* Expression: 0
-                                        * Referenced by: '<Root>/Step'
+  real_T Step2_Y0;                     /* Expression: 0
+                                        * Referenced by: '<Root>/Step2'
                                         */
-  real_T Step_YFinal;                  /* Expression: 50
-                                        * Referenced by: '<Root>/Step'
+  real_T Step2_YFinal;                 /* Expression: 50
+                                        * Referenced by: '<Root>/Step2'
                                         */
   real_T realderivative1_A[2];         /* Computed Parameter: realderivative1_A
-                                        * Referenced by: '<S3>/real derivative1'
+                                        * Referenced by: '<S4>/real derivative1'
                                         */
   real_T realderivative1_C[2];         /* Computed Parameter: realderivative1_C
-                                        * Referenced by: '<S3>/real derivative1'
+                                        * Referenced by: '<S4>/real derivative1'
                                         */
   real_T realderivative2_A[2];         /* Computed Parameter: realderivative2_A
-                                        * Referenced by: '<S3>/real derivative2'
+                                        * Referenced by: '<S4>/real derivative2'
                                         */
   real_T realderivative2_C[2];         /* Computed Parameter: realderivative2_C
-                                        * Referenced by: '<S3>/real derivative2'
+                                        * Referenced by: '<S4>/real derivative2'
                                         */
-  real_T Step1_Time;                   /* Expression: 0
-                                        * Referenced by: '<Root>/Step1'
+  real_T Step3_Time;                   /* Expression: 0.53
+                                        * Referenced by: '<Root>/Step3'
                                         */
-  real_T Step1_Y0;                     /* Expression: 0
-                                        * Referenced by: '<Root>/Step1'
+  real_T Step3_Y0;                     /* Expression: 0
+                                        * Referenced by: '<Root>/Step3'
                                         */
-  real_T Step1_YFinal;                 /* Expression: 50
-                                        * Referenced by: '<Root>/Step1'
+  real_T Step3_YFinal;                 /* Expression: 50
+                                        * Referenced by: '<Root>/Step3'
                                         */
 };
 
@@ -1264,11 +1277,12 @@ extern RT_MODEL_realtsim_T *const realtsim_M;
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'realtsim'
- * '<S1>'   : 'realtsim/Beam Displacement sensing'
- * '<S2>'   : 'realtsim/Enabled Subsystem'
- * '<S3>'   : 'realtsim/Subsystem'
- * '<S4>'   : 'realtsim/Beam Displacement sensing/Bias Estimation'
- * '<S5>'   : 'realtsim/Beam Displacement sensing/Bias Estimation/Enabled Subsystem'
- * '<S6>'   : 'realtsim/Beam Displacement sensing/Bias Estimation/Interval Test'
+ * '<S1>'   : 'realtsim/Beam Displacement sensing1'
+ * '<S2>'   : 'realtsim/State Space Controller'
+ * '<S3>'   : 'realtsim/Subsystem1'
+ * '<S4>'   : 'realtsim/Subsystem2'
+ * '<S5>'   : 'realtsim/Beam Displacement sensing1/Bias Estimation'
+ * '<S6>'   : 'realtsim/Beam Displacement sensing1/Bias Estimation/Enabled Subsystem'
+ * '<S7>'   : 'realtsim/Beam Displacement sensing1/Bias Estimation/Interval Test'
  */
 #endif                                 /* RTW_HEADER_realtsim_h_ */

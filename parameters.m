@@ -57,8 +57,10 @@ mld.Bh = 2.5e-4; % viscous friction coeff
 mld.Jb = 1.4e-3; % moment of inertia
 mld.d = 5.0e-2; % flex joint damping coeff (estimated)
 mld.wn = 24.5; % flex joint natural freq (estimated)
-mld.Bb = mld.Jb * 2*mld.d*mld.wn; % beam viscous friction
-mld.k = mld.Jb * mld.wn^2; % flex joint stiffness
+%mld.Bb = mld.Jb * 2*mld.d*mld.wn; % beam viscous friction
+mld.Bb = 0.0029; % estimated
+%mld.k = mld.Jb * mld.wn^2; % flex joint stiffness
+mld.k = 0.9383; % estimated
 
 
 Beq = 1.9610e-06; % (estimated)

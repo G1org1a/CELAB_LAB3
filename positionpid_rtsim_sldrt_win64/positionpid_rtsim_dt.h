@@ -7,9 +7,9 @@
  *
  * Code generation for model "positionpid_rtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.37
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:25:35 2023
+ * C source code generated on : Thu Jun  8 14:18:20 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -95,7 +95,7 @@ static DataTypeTransition rtBTransitions[] = {
   { (char_T *)(&positionpid_rtsim_B.thl_meas), 0, 0, 5 }
   ,
 
-  { (char_T *)(&positionpid_rtsim_DW.EncoderInput_PWORK), 11, 0, 7 }
+  { (char_T *)(&positionpid_rtsim_DW.EncoderInput_PWORK), 11, 0, 6 }
 };
 
 /* data type transition table for block I/O structure */

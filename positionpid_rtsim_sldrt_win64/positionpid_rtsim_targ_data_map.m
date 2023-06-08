@@ -246,7 +246,7 @@
                     section.data(3).logicalSrcIdx = 2;
                     section.data(3).dtTransOffset = 2;
 
-                    ;% positionpid_rtsim_B.Sum1
+                    ;% positionpid_rtsim_B.Saturationdetection
                     section.data(4).logicalSrcIdx = 3;
                     section.data(4).dtTransOffset = 3;
 
@@ -299,8 +299,8 @@
         ;%
         ;% Auto data (positionpid_rtsim_DW)
         ;%
-            section.nData     = 6;
-            section.data(6)  = dumData; %prealloc
+            section.nData     = 5;
+            section.data(5)  = dumData; %prealloc
 
                     ;% positionpid_rtsim_DW.EncoderInput_PWORK
                     section.data(1).logicalSrcIdx = 0;
@@ -314,17 +314,13 @@
                     section.data(3).logicalSrcIdx = 2;
                     section.data(3).dtTransOffset = 2;
 
-                    ;% positionpid_rtsim_DW.wff_PWORK.LoggedData
+                    ;% positionpid_rtsim_DW.Scope_PWORK_c.LoggedData
                     section.data(4).logicalSrcIdx = 3;
                     section.data(4).dtTransOffset = 4;
 
-                    ;% positionpid_rtsim_DW.Scope_PWORK_g.LoggedData
+                    ;% positionpid_rtsim_DW.AnalogOutput_PWORK
                     section.data(5).logicalSrcIdx = 4;
                     section.data(5).dtTransOffset = 5;
-
-                    ;% positionpid_rtsim_DW.AnalogOutput_PWORK
-                    section.data(6).logicalSrcIdx = 5;
-                    section.data(6).dtTransOffset = 6;
 
             nTotData = nTotData + section.nData;
             dworkMap.sections(1) = section;
@@ -356,8 +352,8 @@
     ;%
 
 
-    targMap.checksum0 = 1423480159;
-    targMap.checksum1 = 1610004999;
-    targMap.checksum2 = 2477451714;
-    targMap.checksum3 = 858378292;
+    targMap.checksum0 = 357481484;
+    targMap.checksum1 = 3456470015;
+    targMap.checksum2 = 3793730742;
+    targMap.checksum3 = 372837432;
 

@@ -7,9 +7,9 @@
  *
  * Code generation for model "positionpid_rtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.37
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:25:35 2023
+ * C source code generated on : Thu Jun  8 14:18:20 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -869,7 +869,7 @@ typedef struct {
   real_T thl_meas;                     /* '<Root>/pulse2deg1' */
   real_T Step2;                        /* '<Root>/Step2' */
   real_T Derivativegain;               /* '<S1>/Derivative gain' */
-  real_T Sum1;                         /* '<S1>/Sum1' */
+  real_T Saturationdetection;          /* '<S1>/Saturation detection' */
   real_T Sum2;                         /* '<S1>/Sum2' */
 } B_positionpid_rtsim_T;
 
@@ -883,11 +883,7 @@ typedef struct {
 
   struct {
     void *LoggedData;
-  } wff_PWORK;                         /* '<Root>/w// ff' */
-
-  struct {
-    void *LoggedData;
-  } Scope_PWORK_g;                     /* '<S1>/Scope' */
+  } Scope_PWORK_c;                     /* '<S1>/Scope' */
 
   void *AnalogOutput_PWORK;            /* '<S2>/Analog Output' */
 } DW_positionpid_rtsim_T;

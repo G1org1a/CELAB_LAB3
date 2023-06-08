@@ -7,9 +7,9 @@
  *
  * Code generation for model "positionpid_rtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.37
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:25:35 2023
+ * C source code generated on : Thu Jun  8 14:18:20 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -147,8 +147,7 @@ void positionpid_rtsim_output(void)
 {
   /* local block i/o variables */
   real_T rtb_AnalogInput[2];
-  real_T rtb_Antiwindup;
-  real_T rtb_Saturationdetection;
+  real_T rtb_Sum_n;
   real_T rtb_deg2rad;
   if (rtmIsMajorTimeStep(positionpid_rtsim_M)) {
     /* set solver stop time */
@@ -221,52 +220,54 @@ void positionpid_rtsim_output(void)
   /* Gain: '<S1>/Derivative gain' */
   positionpid_rtsim_B.Derivativegain = positionpid_rtsim_P.PID.Kd * rtb_deg2rad;
 
-  /* Integrator: '<S1>/Integrator' */
-  rtb_Saturationdetection = positionpid_rtsim_X.Integrator_CSTATE;
-
   /* Sum: '<S1>/Sum' incorporates:
    *  Gain: '<S1>/Proportional gain'
+   *  Integrator: '<S1>/Integrator'
    *  TransferFcn: '<S1>/Real derivative'
    */
-  rtb_Antiwindup = ((positionpid_rtsim_P.Realderivative_C *
-                     positionpid_rtsim_X.Realderivative_CSTATE +
-                     positionpid_rtsim_P.Realderivative_D *
-                     positionpid_rtsim_B.Derivativegain) +
-                    positionpid_rtsim_P.PID.Kp * rtb_deg2rad) +
-    rtb_Saturationdetection;
+  rtb_Sum_n = (positionpid_rtsim_P.PID.Kp * 2.0 * rtb_deg2rad +
+               (positionpid_rtsim_P.Realderivative_C *
+                positionpid_rtsim_X.Realderivative_CSTATE +
+                positionpid_rtsim_P.Realderivative_D *
+                positionpid_rtsim_B.Derivativegain)) +
+    positionpid_rtsim_X.Integrator_CSTATE;
 
   /* Saturate: '<S1>/Saturation detection' */
-  if (rtb_Antiwindup > positionpid_rtsim_P.Saturationdetection_UpperSat) {
-    rtb_Saturationdetection = positionpid_rtsim_P.Saturationdetection_UpperSat;
-  } else if (rtb_Antiwindup < positionpid_rtsim_P.Saturationdetection_LowerSat)
-  {
-    rtb_Saturationdetection = positionpid_rtsim_P.Saturationdetection_LowerSat;
+  if (rtb_Sum_n > positionpid_rtsim_P.Saturationdetection_UpperSat) {
+    /* Saturate: '<S1>/Saturation detection' */
+    positionpid_rtsim_B.Saturationdetection =
+      positionpid_rtsim_P.Saturationdetection_UpperSat;
+  } else if (rtb_Sum_n < positionpid_rtsim_P.Saturationdetection_LowerSat) {
+    /* Saturate: '<S1>/Saturation detection' */
+    positionpid_rtsim_B.Saturationdetection =
+      positionpid_rtsim_P.Saturationdetection_LowerSat;
   } else {
-    rtb_Saturationdetection = rtb_Antiwindup;
+    /* Saturate: '<S1>/Saturation detection' */
+    positionpid_rtsim_B.Saturationdetection = rtb_Sum_n;
   }
 
   /* End of Saturate: '<S1>/Saturation detection' */
-
-  /* Sum: '<S1>/Sum1' */
-  positionpid_rtsim_B.Sum1 = rtb_Antiwindup - rtb_Saturationdetection;
   if (rtmIsMajorTimeStep(positionpid_rtsim_M)) {
   }
 
   /* ManualSwitch: '<S1>/Anti wind-up' incorporates:
    *  Gain: '<S1>/Gain2'
+   *  Sum: '<S1>/Sum1'
    */
   if (positionpid_rtsim_P.Antiwindup_CurrentSetting == 1) {
-    rtb_Antiwindup = positionpid_rtsim_P.Kw * positionpid_rtsim_B.Sum1;
+    rtb_Sum_n = positionpid_rtsim_P.Kw / 10.0 * (rtb_Sum_n -
+      positionpid_rtsim_B.Saturationdetection);
   } else {
-    rtb_Antiwindup = 0.0;
+    rtb_Sum_n = 0.0;
   }
+
+  /* End of ManualSwitch: '<S1>/Anti wind-up' */
 
   /* Sum: '<S1>/Sum2' incorporates:
    *  Gain: '<S1>/Integral gain'
-   *  ManualSwitch: '<S1>/Anti wind-up'
    */
   positionpid_rtsim_B.Sum2 = positionpid_rtsim_P.PID.Ki * rtb_deg2rad -
-    rtb_Antiwindup;
+    rtb_Sum_n;
 
   /* S-Function (sldrtao): '<S2>/Analog Output' */
   /* S-Function Block: <S2>/Analog Output */
@@ -277,7 +278,7 @@ void positionpid_rtsim_output(void)
       parm.rangeidx = positionpid_rtsim_P.AnalogOutput_VoltRange;
       RTBIO_DriverIO(0, ANALOGOUTPUT, IOWRITE, 1,
                      &positionpid_rtsim_P.AnalogOutput_Channels, ((real_T*)
-        (&rtb_Saturationdetection)), &parm);
+        (&positionpid_rtsim_B.Saturationdetection)), &parm);
     }
   }
 }
@@ -543,10 +544,10 @@ RT_MODEL_positionpid_rtsim_T *positionpid_rtsim(void)
   positionpid_rtsim_M->Timing.stepSize1 = 0.001;
 
   /* External mode info */
-  positionpid_rtsim_M->Sizes.checksums[0] = (1423480159U);
-  positionpid_rtsim_M->Sizes.checksums[1] = (1610004999U);
-  positionpid_rtsim_M->Sizes.checksums[2] = (2477451714U);
-  positionpid_rtsim_M->Sizes.checksums[3] = (858378292U);
+  positionpid_rtsim_M->Sizes.checksums[0] = (357481484U);
+  positionpid_rtsim_M->Sizes.checksums[1] = (3456470015U);
+  positionpid_rtsim_M->Sizes.checksums[2] = (3793730742U);
+  positionpid_rtsim_M->Sizes.checksums[3] = (372837432U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -614,7 +615,7 @@ RT_MODEL_positionpid_rtsim_T *positionpid_rtsim(void)
   positionpid_rtsim_M->Sizes.numU = (0);/* Number of model inputs */
   positionpid_rtsim_M->Sizes.sysDirFeedThru = (0);/* The model is not direct feedthrough */
   positionpid_rtsim_M->Sizes.numSampTimes = (2);/* Number of sample times */
-  positionpid_rtsim_M->Sizes.numBlocks = (22);/* Number of blocks */
+  positionpid_rtsim_M->Sizes.numBlocks = (21);/* Number of blocks */
   positionpid_rtsim_M->Sizes.numBlockIO = (5);/* Number of block outputs */
   positionpid_rtsim_M->Sizes.numBlockPrms = (31);/* Sum of parameter "widths" */
   return positionpid_rtsim_M;

@@ -7,9 +7,9 @@
  *
  * Code generation for model "realtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.38
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:31:02 2023
+ * C source code generated on : Thu Jun  8 16:29:54 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -90,18 +90,18 @@ static const char_T * rtDataTypeNames[] = {
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&realtsim_B.rads2rpm), 0, 0, 11 },
+  { (char_T *)(&realtsim_B.Step2), 0, 0, 12 },
 
   { (char_T *)(&realtsim_B.AND), 8, 0, 1 }
   ,
 
   { (char_T *)(&realtsim_DW.DiscreteTimeIntegrator_DSTATE), 0, 0, 1 },
 
-  { (char_T *)(&realtsim_DW.AnalogInput_PWORK), 11, 0, 8 },
+  { (char_T *)(&realtsim_DW.EncoderInput_PWORK), 11, 0, 13 },
 
-  { (char_T *)(&realtsim_DW.EnabledSubsystem_SubsysRanBC), 2, 0, 2 },
+  { (char_T *)(&realtsim_DW.StateSpaceController_SubsysRanBC), 2, 0, 2 },
 
-  { (char_T *)(&realtsim_DW.EnabledSubsystem_MODE), 8, 0, 1 }
+  { (char_T *)(&realtsim_DW.StateSpaceController_MODE), 8, 0, 1 }
 };
 
 /* data type transition table for block I/O structure */
@@ -116,7 +116,7 @@ static DataTypeTransition rtPTransitions[] = {
 
   { (char_T *)(&realtsim_P.K[0]), 0, 0, 25 },
 
-  { (char_T *)(&realtsim_P.AnalogInput_Channels[0]), 6, 0, 8 },
+  { (char_T *)(&realtsim_P.EncoderInput_Channels), 6, 0, 8 },
 
   { (char_T *)(&realtsim_P.Out_Y0), 0, 0, 22 }
 };

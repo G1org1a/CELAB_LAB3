@@ -36,7 +36,8 @@ Z = cell2mat(Z);
 plot(Z,"x")
 
 
-r = 1/4;
-K = lqr(sysG, transpose(C)*C, r);
+r = 1/5000;
+% K = lqr(sysG, transpose(C)*C, r);
+K = lqry(sysG, 1, r);
 Ki = 0;
 

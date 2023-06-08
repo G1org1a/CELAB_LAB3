@@ -7,9 +7,9 @@
  *
  * Code generation for model "thd_acq".
  *
- * Model version              : 1.36
+ * Model version              : 1.38
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 16:59:16 2023
+ * C source code generated on : Thu Jun  8 13:41:57 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

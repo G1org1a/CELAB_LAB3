@@ -7,9 +7,9 @@
  *
  * Code generation for model "realtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.38
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:31:02 2023
+ * C source code generated on : Thu Jun  8 16:29:54 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

@@ -7,9 +7,9 @@
  *
  * Code generation for model "realtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.38
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:31:02 2023
+ * C source code generated on : Thu Jun  8 16:29:54 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -147,7 +147,6 @@ void realtsim_output(void)
 {
   real_T rtb_AnalogInput[2];
   real_T rtb_deg2rad;
-  real_T rtb_deg2rad1;
   if (rtmIsMajorTimeStep(realtsim_M)) {
     /* set solver stop time */
     if (!(realtsim_M->Timing.clockTick0+1)) {
@@ -168,22 +167,44 @@ void realtsim_output(void)
   }
 
   /* Reset subsysRan breadcrumbs */
-  srClearBC(realtsim_DW.EnabledSubsystem_SubsysRanBC_g);
-
-  /* Reset subsysRan breadcrumbs */
   srClearBC(realtsim_DW.EnabledSubsystem_SubsysRanBC);
 
-  /* TransferFcn: '<S3>/real derivative1' */
-  rtb_deg2rad1 = realtsim_P.realderivative1_C[0] *
+  /* Reset subsysRan breadcrumbs */
+  srClearBC(realtsim_DW.StateSpaceController_SubsysRanBC);
+
+  /* Step: '<Root>/Step2' */
+  if (realtsim_M->Timing.t[0] < realtsim_P.Step2_Time) {
+    /* Step: '<Root>/Step2' */
+    realtsim_B.Step2 = realtsim_P.Step2_Y0;
+  } else {
+    /* Step: '<Root>/Step2' */
+    realtsim_B.Step2 = realtsim_P.Step2_YFinal;
+  }
+
+  /* End of Step: '<Root>/Step2' */
+
+  /* TransferFcn: '<S4>/real derivative1' */
+  rtb_deg2rad = realtsim_P.realderivative1_C[0] *
     realtsim_X.realderivative1_CSTATE[0];
-  rtb_deg2rad1 += realtsim_P.realderivative1_C[1] *
+  rtb_deg2rad += realtsim_P.realderivative1_C[1] *
     realtsim_X.realderivative1_CSTATE[1];
 
-  /* Gain: '<S3>/rads2rpm' */
-  realtsim_B.rads2rpm = realtsim_P.rads2rpm * rtb_deg2rad1;
+  /* Gain: '<S4>/rads2rpm' */
+  realtsim_B.rads2rpm = realtsim_P.rads2rpm * rtb_deg2rad;
 
-  /* S-Function (sldrtai): '<Root>/Analog Input' */
-  /* S-Function Block: <Root>/Analog Input */
+  /* S-Function (sldrtei): '<S3>/Encoder Input' */
+  /* S-Function Block: <S3>/Encoder Input */
+  {
+    ENCODERINPARM parm;
+    parm.quad = (QUADMODE) 2;
+    parm.index = (INDEXPULSE) 0;
+    parm.infilter = realtsim_P.EncoderInput_InputFilter;
+    RTBIO_DriverIO(0, ENCODERINPUT, IOREAD, 1, &realtsim_P.EncoderInput_Channels,
+                   &rtb_deg2rad, &parm);
+  }
+
+  /* S-Function (sldrtai): '<S3>/Analog Input' */
+  /* S-Function Block: <S3>/Analog Input */
   {
     ANALOGIOPARM parm;
     parm.mode = (RANGEMODE) realtsim_P.AnalogInput_RangeMode;
@@ -192,111 +213,94 @@ void realtsim_output(void)
                    &rtb_AnalogInput[0], &parm);
   }
 
-  /* S-Function (sldrtei): '<Root>/Encoder Input' */
-  /* S-Function Block: <Root>/Encoder Input */
-  {
-    ENCODERINPARM parm;
-    parm.quad = (QUADMODE) 2;
-    parm.index = (INDEXPULSE) 0;
-    parm.infilter = realtsim_P.EncoderInput_InputFilter;
-    RTBIO_DriverIO(0, ENCODERINPUT, IOREAD, 1, &realtsim_P.EncoderInput_Channels,
-                   &rtb_deg2rad1, &parm);
-  }
+  /* Gain: '<Root>/pulse2deg' */
+  realtsim_B.pulse2deg = realtsim_P.sens.enc.pulse2deg * rtb_deg2rad;
 
-  /* Gain: '<S1>/Gain' incorporates:
-   *  Sum: '<S1>/Subtract'
+  /* TransferFcn: '<S4>/real derivative2' */
+  rtb_deg2rad = realtsim_P.realderivative2_C[0] *
+    realtsim_X.realderivative2_CSTATE[0];
+
+  /* Gain: '<S4>/rads2rpm1' incorporates:
+   *  TransferFcn: '<S4>/real derivative2'
    */
-  realtsim_B.Gain = (rtb_AnalogInput[0] - rtb_AnalogInput[1]) * realtsim_P.V2deg;
+  realtsim_B.rads2rpm1 = (realtsim_P.realderivative2_C[1] *
+    realtsim_X.realderivative2_CSTATE[1] + rtb_deg2rad) * realtsim_P.rads2rpm;
 
-  /* Clock: '<S4>/Clock' */
+  /* Sum: '<S1>/Subtract' */
+  rtb_deg2rad = rtb_AnalogInput[0] - rtb_AnalogInput[1];
+
+  /* Gain: '<S1>/Gain' */
+  realtsim_B.Gain = realtsim_P.V2deg * rtb_deg2rad;
+
+  /* Clock: '<S5>/Clock' */
   rtb_deg2rad = realtsim_M->Timing.t[0];
 
-  /* Logic: '<S6>/AND' incorporates:
-   *  Constant: '<S6>/Lower Limit'
-   *  Constant: '<S6>/Upper Limit'
-   *  RelationalOperator: '<S6>/Lower Test'
-   *  RelationalOperator: '<S6>/Upper Test'
+  /* Logic: '<S7>/AND' incorporates:
+   *  Constant: '<S7>/Lower Limit'
+   *  Constant: '<S7>/Upper Limit'
+   *  RelationalOperator: '<S7>/Lower Test'
+   *  RelationalOperator: '<S7>/Upper Test'
    */
   realtsim_B.AND = ((realtsim_P.IntervalTest_lowlimit <= rtb_deg2rad) &&
                     (rtb_deg2rad <= realtsim_P.IntervalTest_uplimit));
   if (rtmIsMajorTimeStep(realtsim_M)) {
-    /* Outputs for Enabled SubSystem: '<S4>/Enabled Subsystem' incorporates:
-     *  EnablePort: '<S5>/Enable'
+    /* Outputs for Enabled SubSystem: '<S5>/Enabled Subsystem' incorporates:
+     *  EnablePort: '<S6>/Enable'
      */
     if (realtsim_B.AND) {
-      /* DiscreteIntegrator: '<S5>/Discrete-Time Integrator' */
+      /* DiscreteIntegrator: '<S6>/Discrete-Time Integrator' */
       realtsim_B.DiscreteTimeIntegrator =
         realtsim_DW.DiscreteTimeIntegrator_DSTATE;
       if (rtsiIsModeUpdateTimeStep(&realtsim_M->solverInfo)) {
-        srUpdateBC(realtsim_DW.EnabledSubsystem_SubsysRanBC_g);
+        srUpdateBC(realtsim_DW.EnabledSubsystem_SubsysRanBC);
       }
     }
 
-    /* End of Outputs for SubSystem: '<S4>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<S5>/Enabled Subsystem' */
 
-    /* Step: '<Root>/Step1' */
-    if (realtsim_M->Timing.t[1] < realtsim_P.Step1_Time) {
-      /* Step: '<Root>/Step1' */
-      realtsim_B.Step1 = realtsim_P.Step1_Y0;
+    /* Step: '<Root>/Step3' */
+    if (realtsim_M->Timing.t[1] < realtsim_P.Step3_Time) {
+      /* Step: '<Root>/Step3' */
+      realtsim_B.Step3 = realtsim_P.Step3_Y0;
     } else {
-      /* Step: '<Root>/Step1' */
-      realtsim_B.Step1 = realtsim_P.Step1_YFinal;
+      /* Step: '<Root>/Step3' */
+      realtsim_B.Step3 = realtsim_P.Step3_YFinal;
     }
 
-    /* End of Step: '<Root>/Step1' */
+    /* End of Step: '<Root>/Step3' */
 
-    /* Outputs for Enabled SubSystem: '<Root>/Enabled Subsystem' incorporates:
+    /* Outputs for Enabled SubSystem: '<Root>/State Space Controller' incorporates:
      *  EnablePort: '<S2>/Enable'
      */
     if (rtsiIsModeUpdateTimeStep(&realtsim_M->solverInfo)) {
-      realtsim_DW.EnabledSubsystem_MODE = (realtsim_B.Step1 > 0.0);
+      realtsim_DW.StateSpaceController_MODE = (realtsim_B.Step3 > 0.0);
     }
 
-    /* End of Outputs for SubSystem: '<Root>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<Root>/State Space Controller' */
   }
 
   /* Sum: '<S1>/Sum' */
   realtsim_B.Sum = realtsim_B.Gain - realtsim_B.DiscreteTimeIntegrator;
 
-  /* Gain: '<S3>/rads2rpm1' incorporates:
-   *  TransferFcn: '<S3>/real derivative2'
-   */
-  realtsim_B.rads2rpm1 = (realtsim_P.realderivative2_C[0] *
-    realtsim_X.realderivative2_CSTATE[0] + realtsim_P.realderivative2_C[1] *
-    realtsim_X.realderivative2_CSTATE[1]) * realtsim_P.rads2rpm;
-
-  /* Gain: '<Root>/pulse2deg' */
-  realtsim_B.pulse2deg = realtsim_P.sens.enc.pulse2deg * rtb_deg2rad1;
-
-  /* Outputs for Enabled SubSystem: '<Root>/Enabled Subsystem' incorporates:
+  /* Outputs for Enabled SubSystem: '<Root>/State Space Controller' incorporates:
    *  EnablePort: '<S2>/Enable'
    */
-  if (realtsim_DW.EnabledSubsystem_MODE) {
+  if (realtsim_DW.StateSpaceController_MODE) {
+    real_T u0;
     real_T u0_tmp;
     if (rtmIsMajorTimeStep(realtsim_M)) {
     }
 
-    /* Step: '<Root>/Step' */
-    if (realtsim_M->Timing.t[0] < realtsim_P.Step_Time) {
-      rtb_deg2rad = realtsim_P.Step_Y0;
-    } else {
-      rtb_deg2rad = realtsim_P.Step_YFinal;
-    }
+    /* Gain: '<S2>/deg2rad' */
+    rtb_deg2rad = realtsim_P.deg2rad * realtsim_B.Step2;
 
-    /* Gain: '<S2>/deg2rad' incorporates:
-     *  Step: '<Root>/Step'
-     */
-    rtb_deg2rad *= realtsim_P.deg2rad;
-
-    /* Gain: '<S2>/deg2rad1' */
-    rtb_deg2rad1 = realtsim_P.deg2rad * realtsim_B.Sum;
-
-    /* Gain: '<S2>/deg2rad2' incorporates:
+    /* Gain: '<S2>/deg2rad1' incorporates:
      *  Gain: '<S2>/deg2rad3'
      */
     u0_tmp = realtsim_P.deg2rad * realtsim_B.pulse2deg;
 
     /* Sum: '<S2>/Sum4' incorporates:
+     *  Gain: '<S2>/deg2rad1'
      *  Gain: '<S2>/deg2rad2'
      *  Gain: '<S2>/input feedforward gain'
      *  Gain: '<S2>/rpm2rads1'
@@ -306,25 +310,25 @@ void realtsim_output(void)
      *  Sum: '<S2>/Sum1'
      *  TransferFcn: '<S2>/Transfer Fcn'
      */
-    rtb_deg2rad1 = (((((realtsim_P.Nx[0] * rtb_deg2rad - rtb_deg2rad1) *
-                       realtsim_P.K[0] + (realtsim_P.Nx[1] * rtb_deg2rad -
-      u0_tmp) * realtsim_P.K[1]) + (realtsim_P.Nx[2] * rtb_deg2rad -
-      realtsim_P.rpm2rads * realtsim_B.rads2rpm) * realtsim_P.K[2]) +
-                     (realtsim_P.Nx[3] * rtb_deg2rad - realtsim_P.rpm2rads *
-                      realtsim_B.rads2rpm1) * realtsim_P.K[3]) + realtsim_P.Nu *
-                    rtb_deg2rad) + realtsim_P.TransferFcn_C *
+    u0 = (((((realtsim_P.Nx[0] * rtb_deg2rad - u0_tmp) * realtsim_P.K[0] +
+             (realtsim_P.Nx[1] * rtb_deg2rad - realtsim_P.deg2rad *
+              realtsim_B.Sum) * realtsim_P.K[1]) + (realtsim_P.Nx[2] *
+             rtb_deg2rad - realtsim_P.rpm2rads * realtsim_B.rads2rpm) *
+            realtsim_P.K[2]) + (realtsim_P.Nx[3] * rtb_deg2rad -
+            realtsim_P.rpm2rads * realtsim_B.rads2rpm1) * realtsim_P.K[3]) +
+          realtsim_P.Nu * rtb_deg2rad) + realtsim_P.TransferFcn_C *
       realtsim_X.TransferFcn_CSTATE;
 
     /* Saturate: '<S2>/ Saturation' */
-    if (rtb_deg2rad1 > realtsim_P.Saturation_UpperSat) {
+    if (u0 > realtsim_P.Saturation_UpperSat) {
       /* Saturate: '<S2>/ Saturation' */
       realtsim_B.Saturation = realtsim_P.Saturation_UpperSat;
-    } else if (rtb_deg2rad1 < realtsim_P.Saturation_LowerSat) {
+    } else if (u0 < realtsim_P.Saturation_LowerSat) {
       /* Saturate: '<S2>/ Saturation' */
       realtsim_B.Saturation = realtsim_P.Saturation_LowerSat;
     } else {
       /* Saturate: '<S2>/ Saturation' */
-      realtsim_B.Saturation = rtb_deg2rad1;
+      realtsim_B.Saturation = u0;
     }
 
     /* End of Saturate: '<S2>/ Saturation' */
@@ -332,16 +336,18 @@ void realtsim_output(void)
     /* Gain: '<S2>/Gain' incorporates:
      *  Sum: '<S2>/Sum2'
      */
-    realtsim_B.Gain_p = (rtb_deg2rad - u0_tmp) * realtsim_P.Ki;
+    realtsim_B.Gain_c = (rtb_deg2rad - u0_tmp) * realtsim_P.Ki;
     if (rtsiIsModeUpdateTimeStep(&realtsim_M->solverInfo)) {
-      srUpdateBC(realtsim_DW.EnabledSubsystem_SubsysRanBC);
+      srUpdateBC(realtsim_DW.StateSpaceController_SubsysRanBC);
     }
   }
 
-  /* End of Outputs for SubSystem: '<Root>/Enabled Subsystem' */
+  /* End of Outputs for SubSystem: '<Root>/State Space Controller' */
+  if (rtmIsMajorTimeStep(realtsim_M)) {
+  }
 
-  /* S-Function (sldrtao): '<Root>/Analog Output' */
-  /* S-Function Block: <Root>/Analog Output */
+  /* S-Function (sldrtao): '<S3>/Analog Output' */
+  /* S-Function Block: <S3>/Analog Output */
   {
     {
       ANALOGIOPARM parm;
@@ -353,30 +359,27 @@ void realtsim_output(void)
     }
   }
 
-  if (rtmIsMajorTimeStep(realtsim_M)) {
-  }
+  /* Gain: '<S4>/deg2rad1' */
+  realtsim_B.deg2rad1 = realtsim_P.deg2rad * realtsim_B.Sum;
 
-  /* Gain: '<S3>/deg2rad1' */
-  realtsim_B.deg2rad1 = realtsim_P.deg2rad * realtsim_B.pulse2deg;
-
-  /* Gain: '<S3>/deg2rad' */
-  realtsim_B.deg2rad = realtsim_P.deg2rad * realtsim_B.Sum;
+  /* Gain: '<S4>/deg2rad' */
+  realtsim_B.deg2rad = realtsim_P.deg2rad * realtsim_B.pulse2deg;
 }
 
 /* Model update function */
 void realtsim_update(void)
 {
   if (rtmIsMajorTimeStep(realtsim_M)) {
-    /* Update for Enabled SubSystem: '<S4>/Enabled Subsystem' incorporates:
-     *  EnablePort: '<S5>/Enable'
+    /* Update for Enabled SubSystem: '<S5>/Enabled Subsystem' incorporates:
+     *  EnablePort: '<S6>/Enable'
      */
     if (realtsim_B.AND) {
-      /* Update for DiscreteIntegrator: '<S5>/Discrete-Time Integrator' */
+      /* Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator' */
       realtsim_DW.DiscreteTimeIntegrator_DSTATE +=
         realtsim_P.DiscreteTimeIntegrator_gainval * realtsim_B.Gain;
     }
 
-    /* End of Update for SubSystem: '<S4>/Enabled Subsystem' */
+    /* End of Update for SubSystem: '<S5>/Enabled Subsystem' */
   }
 
   if (rtmIsMajorTimeStep(realtsim_M)) {
@@ -424,7 +427,7 @@ void realtsim_derivatives(void)
   XDot_realtsim_T *_rtXdot;
   _rtXdot = ((XDot_realtsim_T *) realtsim_M->derivs);
 
-  /* Derivatives for TransferFcn: '<S3>/real derivative1' */
+  /* Derivatives for TransferFcn: '<S4>/real derivative1' */
   _rtXdot->realderivative1_CSTATE[0] = 0.0;
   _rtXdot->realderivative1_CSTATE[0] += realtsim_P.realderivative1_A[0] *
     realtsim_X.realderivative1_CSTATE[0];
@@ -434,7 +437,7 @@ void realtsim_derivatives(void)
   _rtXdot->realderivative1_CSTATE[1] += realtsim_X.realderivative1_CSTATE[0];
   _rtXdot->realderivative1_CSTATE[0] += realtsim_B.deg2rad;
 
-  /* Derivatives for TransferFcn: '<S3>/real derivative2' */
+  /* Derivatives for TransferFcn: '<S4>/real derivative2' */
   _rtXdot->realderivative2_CSTATE[0] = 0.0;
   _rtXdot->realderivative2_CSTATE[0] += realtsim_P.realderivative2_A[0] *
     realtsim_X.realderivative2_CSTATE[0];
@@ -444,31 +447,31 @@ void realtsim_derivatives(void)
   _rtXdot->realderivative2_CSTATE[1] += realtsim_X.realderivative2_CSTATE[0];
   _rtXdot->realderivative2_CSTATE[0] += realtsim_B.deg2rad1;
 
-  /* Derivatives for Enabled SubSystem: '<Root>/Enabled Subsystem' */
-  if (realtsim_DW.EnabledSubsystem_MODE) {
+  /* Derivatives for Enabled SubSystem: '<Root>/State Space Controller' */
+  if (realtsim_DW.StateSpaceController_MODE) {
     /* Derivatives for TransferFcn: '<S2>/Transfer Fcn' */
     _rtXdot->TransferFcn_CSTATE = 0.0;
     _rtXdot->TransferFcn_CSTATE += realtsim_P.TransferFcn_A *
       realtsim_X.TransferFcn_CSTATE;
-    _rtXdot->TransferFcn_CSTATE += realtsim_B.Gain_p;
+    _rtXdot->TransferFcn_CSTATE += realtsim_B.Gain_c;
   } else {
     ((XDot_realtsim_T *) realtsim_M->derivs)->TransferFcn_CSTATE = 0.0;
   }
 
-  /* End of Derivatives for SubSystem: '<Root>/Enabled Subsystem' */
+  /* End of Derivatives for SubSystem: '<Root>/State Space Controller' */
 }
 
 /* Model initialize function */
 void realtsim_initialize(void)
 {
-  /* Start for Enabled SubSystem: '<Root>/Enabled Subsystem' */
-  realtsim_DW.EnabledSubsystem_MODE = false;
+  /* Start for Enabled SubSystem: '<Root>/State Space Controller' */
+  realtsim_DW.StateSpaceController_MODE = false;
 
-  /* End of Start for SubSystem: '<Root>/Enabled Subsystem' */
+  /* End of Start for SubSystem: '<Root>/State Space Controller' */
 
-  /* Start for S-Function (sldrtao): '<Root>/Analog Output' */
+  /* Start for S-Function (sldrtao): '<S3>/Analog Output' */
 
-  /* S-Function Block: <Root>/Analog Output */
+  /* S-Function Block: <S3>/Analog Output */
   {
     {
       ANALOGIOPARM parm;
@@ -480,13 +483,13 @@ void realtsim_initialize(void)
     }
   }
 
-  /* InitializeConditions for TransferFcn: '<S3>/real derivative1' */
+  /* InitializeConditions for TransferFcn: '<S4>/real derivative1' */
   realtsim_X.realderivative1_CSTATE[0] = 0.0;
   realtsim_X.realderivative1_CSTATE[1] = 0.0;
 
-  /* InitializeConditions for S-Function (sldrtei): '<Root>/Encoder Input' */
+  /* InitializeConditions for S-Function (sldrtei): '<S3>/Encoder Input' */
 
-  /* S-Function Block: <Root>/Encoder Input */
+  /* S-Function Block: <S3>/Encoder Input */
   {
     ENCODERINPARM parm;
     parm.quad = (QUADMODE) 2;
@@ -496,23 +499,23 @@ void realtsim_initialize(void)
                    &realtsim_P.EncoderInput_Channels, NULL, &parm);
   }
 
-  /* InitializeConditions for TransferFcn: '<S3>/real derivative2' */
+  /* InitializeConditions for TransferFcn: '<S4>/real derivative2' */
   realtsim_X.realderivative2_CSTATE[0] = 0.0;
   realtsim_X.realderivative2_CSTATE[1] = 0.0;
 
-  /* SystemInitialize for Enabled SubSystem: '<S4>/Enabled Subsystem' */
-  /* InitializeConditions for DiscreteIntegrator: '<S5>/Discrete-Time Integrator' */
+  /* SystemInitialize for Enabled SubSystem: '<S5>/Enabled Subsystem' */
+  /* InitializeConditions for DiscreteIntegrator: '<S6>/Discrete-Time Integrator' */
   realtsim_DW.DiscreteTimeIntegrator_DSTATE =
     realtsim_P.DiscreteTimeIntegrator_IC;
 
-  /* SystemInitialize for DiscreteIntegrator: '<S5>/Discrete-Time Integrator' incorporates:
-   *  Outport: '<S5>/Out'
+  /* SystemInitialize for DiscreteIntegrator: '<S6>/Discrete-Time Integrator' incorporates:
+   *  Outport: '<S6>/Out'
    */
   realtsim_B.DiscreteTimeIntegrator = realtsim_P.Out_Y0;
 
-  /* End of SystemInitialize for SubSystem: '<S4>/Enabled Subsystem' */
+  /* End of SystemInitialize for SubSystem: '<S5>/Enabled Subsystem' */
 
-  /* SystemInitialize for Enabled SubSystem: '<Root>/Enabled Subsystem' */
+  /* SystemInitialize for Enabled SubSystem: '<Root>/State Space Controller' */
   /* InitializeConditions for TransferFcn: '<S2>/Transfer Fcn' */
   realtsim_X.TransferFcn_CSTATE = 0.0;
 
@@ -521,15 +524,15 @@ void realtsim_initialize(void)
    */
   realtsim_B.Saturation = realtsim_P.uV_Y0;
 
-  /* End of SystemInitialize for SubSystem: '<Root>/Enabled Subsystem' */
+  /* End of SystemInitialize for SubSystem: '<Root>/State Space Controller' */
 }
 
 /* Model terminate function */
 void realtsim_terminate(void)
 {
-  /* Terminate for S-Function (sldrtao): '<Root>/Analog Output' */
+  /* Terminate for S-Function (sldrtao): '<S3>/Analog Output' */
 
-  /* S-Function Block: <Root>/Analog Output */
+  /* S-Function Block: <S3>/Analog Output */
   {
     {
       ANALOGIOPARM parm;
@@ -680,15 +683,15 @@ RT_MODEL_realtsim_T *realtsim(void)
     realtsim_M->Timing.sampleHits = (&mdlSampleHits[0]);
   }
 
-  rtmSetTFinal(realtsim_M, 9.0);
+  rtmSetTFinal(realtsim_M, 10.0);
   realtsim_M->Timing.stepSize0 = 0.001;
   realtsim_M->Timing.stepSize1 = 0.001;
 
   /* External mode info */
-  realtsim_M->Sizes.checksums[0] = (3215892544U);
-  realtsim_M->Sizes.checksums[1] = (3574296525U);
-  realtsim_M->Sizes.checksums[2] = (3732778097U);
-  realtsim_M->Sizes.checksums[3] = (146666970U);
+  realtsim_M->Sizes.checksums[0] = (1005310427U);
+  realtsim_M->Sizes.checksums[1] = (1248552675U);
+  realtsim_M->Sizes.checksums[2] = (3387333869U);
+  realtsim_M->Sizes.checksums[3] = (3687229227U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -697,8 +700,8 @@ RT_MODEL_realtsim_T *realtsim(void)
     realtsim_M->extModeInfo = (&rt_ExtModeInfo);
     rteiSetSubSystemActiveVectorAddresses(&rt_ExtModeInfo, systemRan);
     systemRan[0] = &rtAlwaysEnabled;
-    systemRan[1] = (sysRanDType *)&realtsim_DW.EnabledSubsystem_SubsysRanBC_g;
-    systemRan[2] = (sysRanDType *)&realtsim_DW.EnabledSubsystem_SubsysRanBC;
+    systemRan[1] = (sysRanDType *)&realtsim_DW.EnabledSubsystem_SubsysRanBC;
+    systemRan[2] = (sysRanDType *)&realtsim_DW.StateSpaceController_SubsysRanBC;
     rteiSetModelMappingInfoPtr(realtsim_M->extModeInfo,
       &realtsim_M->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(realtsim_M->extModeInfo, realtsim_M->Sizes.checksums);
@@ -756,8 +759,8 @@ RT_MODEL_realtsim_T *realtsim(void)
   realtsim_M->Sizes.numU = (0);        /* Number of model inputs */
   realtsim_M->Sizes.sysDirFeedThru = (0);/* The model is not direct feedthrough */
   realtsim_M->Sizes.numSampTimes = (2);/* Number of sample times */
-  realtsim_M->Sizes.numBlocks = (44);  /* Number of blocks */
-  realtsim_M->Sizes.numBlockIO = (12); /* Number of block outputs */
+  realtsim_M->Sizes.numBlocks = (47);  /* Number of blocks */
+  realtsim_M->Sizes.numBlockIO = (13); /* Number of block outputs */
   realtsim_M->Sizes.numBlockPrms = (56);/* Sum of parameter "widths" */
   return realtsim_M;
 }

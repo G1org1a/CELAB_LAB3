@@ -19,6 +19,6 @@ N = stsp\[0; 0; 0; 0; 1];
 Nx = N(1:4);
 Nu = N(end);
 
-K = acker(Ae,Be,eig_robust*2); %we multiplied by 2 the eigs to adjust the overshoot, write this attempt on the report
+K = acker(Ae,Be,eig_robust/2); %we multiplied by 2 the eigs to adjust the overshoot, write this attempt on the report
 Ki = K(1);
 K = K(2:end);

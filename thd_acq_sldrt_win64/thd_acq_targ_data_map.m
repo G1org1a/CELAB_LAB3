@@ -264,7 +264,7 @@
                     section.data(3).logicalSrcIdx = 3;
                     section.data(3).dtTransOffset = 2;
 
-                    ;% thd_acq_DW.wff_PWORK.LoggedData
+                    ;% thd_acq_DW.acq_PWORK.LoggedData
                     section.data(4).logicalSrcIdx = 4;
                     section.data(4).dtTransOffset = 3;
 
@@ -324,8 +324,8 @@
     ;%
 
 
-    targMap.checksum0 = 1366050836;
-    targMap.checksum1 = 3741530037;
-    targMap.checksum2 = 3903513059;
-    targMap.checksum3 = 1354699030;
+    targMap.checksum0 = 3259231536;
+    targMap.checksum1 = 1687406623;
+    targMap.checksum2 = 2033774276;
+    targMap.checksum3 = 378203794;
 

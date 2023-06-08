@@ -4,7 +4,9 @@ clear
 parameters;
 
 load("data/thd_for_estimation.mat")
-load("data/picchi_cris.mat")
+%load("data/picchi_cris.mat")
+
+
 figure(200);
 plot(meas.time, meas.signals.values);
 hold on;
@@ -14,10 +16,10 @@ hold on;
 values = meas.signals.values;
 time = meas.time;
 
-data_osc = values(5400:7000);
+data_osc = values(44444:46398);
 osc_mean = abs(movmean(data_osc, 9));
 
-data_bias = values(7500:end);
+data_bias = values(46775:end);
 bias_mean = mean(data_bias);
 
 

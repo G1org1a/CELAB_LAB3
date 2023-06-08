@@ -7,9 +7,9 @@
  *
  * Code generation for model "positionpid_rtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.37
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:25:35 2023
+ * C source code generated on : Thu Jun  8 14:18:20 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -76,18 +76,18 @@ P_positionpid_rtsim_T positionpid_rtsim_P = {
    *   '<S1>/Proportional gain'
    */
   {
-    0.020278570728521277,
-    0.047831543208708679,
-    0.71747314813063023,
-    11.418953457847355,
-    0.54618616571725909,
-    15.915513336769932
+    0.010139285364260639,
+    0.066700700651598319,
+    0.66700700651598321,
+    10.521909242711375,
+    0.701818718681377,
+    15.774810669037917
   },
 
   /* Variable: Kw
    * Referenced by: '<S1>/Gain2'
    */
-  23.529411764705884,
+  5.882352941176471,
 
   /* Variable: deg2rad
    * Referenced by: '<S1>/deg2rad'
@@ -192,17 +192,17 @@ P_positionpid_rtsim_T positionpid_rtsim_P = {
   /* Computed Parameter: Realderivative_A
    * Referenced by: '<S1>/Real derivative'
    */
-  -49.313140131396253,
+  -98.6262802627925,
 
   /* Computed Parameter: Realderivative_C
    * Referenced by: '<S1>/Real derivative'
    */
-  -2431.7857896187238,
+  -9727.1431584748952,
 
   /* Computed Parameter: Realderivative_D
    * Referenced by: '<S1>/Real derivative'
    */
-  49.313140131396253,
+  98.6262802627925,
 
   /* Expression: 0
    * Referenced by: '<S1>/Integrator'
@@ -222,5 +222,5 @@ P_positionpid_rtsim_T positionpid_rtsim_P = {
   /* Computed Parameter: Antiwindup_CurrentSetting
    * Referenced by: '<S1>/Anti wind-up'
    */
-  0U
+  1U
 };

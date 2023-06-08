@@ -2,3 +2,4 @@ slprj/
 *.asv
 *.slxc
 *.DS_Store
+*_sldrt_win64/

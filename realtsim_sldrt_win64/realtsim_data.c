@@ -7,9 +7,9 @@
  *
  * Code generation for model "realtsim".
  *
- * Model version              : 1.35
+ * Model version              : 1.38
  * Simulink Coder version : 9.8 (R2022b) 13-May-2022
- * C source code generated on : Thu May 11 17:31:02 2023
+ * C source code generated on : Thu Jun  8 16:29:54 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -72,13 +72,13 @@ P_realtsim_T realtsim_P = {
   /* Variable: K
    * Referenced by: '<S2>/state feedback gain'
    */
-  { 0.5780127579675195, 53.645266874930762, -0.0086118118206772662,
-    -0.5752577216474547 },
+  { 0.11253686899080279, 65.859141494106, -0.096755843140633721,
+    -0.45417331778275366 },
 
   /* Variable: Ki
    * Referenced by: '<S2>/Gain'
    */
-  0.0,
+  0.15955065370091615,
 
   /* Variable: Nu
    * Referenced by: '<S2>/input feedforward gain'
@@ -101,15 +101,15 @@ P_realtsim_T realtsim_P = {
    *   '<S2>/deg2rad1'
    *   '<S2>/deg2rad2'
    *   '<S2>/deg2rad3'
-   *   '<S3>/deg2rad'
-   *   '<S3>/deg2rad1'
+   *   '<S4>/deg2rad'
+   *   '<S4>/deg2rad1'
    */
   0.017453292519943295,
 
   /* Variable: rads2rpm
    * Referenced by:
-   *   '<S3>/rads2rpm'
-   *   '<S3>/rads2rpm1'
+   *   '<S4>/rads2rpm'
+   *   '<S4>/rads2rpm1'
    */
   9.5492965855137211,
 
@@ -121,107 +121,107 @@ P_realtsim_T realtsim_P = {
   0.10471975511965977,
 
   /* Mask Parameter: AnalogOutput_FinalValue
-   * Referenced by: '<Root>/Analog Output'
+   * Referenced by: '<S3>/Analog Output'
    */
   0.0,
 
   /* Mask Parameter: AnalogOutput_InitialValue
-   * Referenced by: '<Root>/Analog Output'
+   * Referenced by: '<S3>/Analog Output'
    */
   0.0,
 
   /* Mask Parameter: EncoderInput_InputFilter
-   * Referenced by: '<Root>/Encoder Input'
+   * Referenced by: '<S3>/Encoder Input'
    */
   0.0,
 
-  /* Mask Parameter: AnalogInput_MaxMissedTicks
-   * Referenced by: '<Root>/Analog Input'
+  /* Mask Parameter: EncoderInput_MaxMissedTicks
+   * Referenced by: '<S3>/Encoder Input'
    */
   10.0,
 
-  /* Mask Parameter: EncoderInput_MaxMissedTicks
-   * Referenced by: '<Root>/Encoder Input'
+  /* Mask Parameter: AnalogInput_MaxMissedTicks
+   * Referenced by: '<S3>/Analog Input'
    */
   10.0,
 
   /* Mask Parameter: AnalogOutput_MaxMissedTicks
-   * Referenced by: '<Root>/Analog Output'
+   * Referenced by: '<S3>/Analog Output'
    */
   10.0,
 
-  /* Mask Parameter: AnalogInput_YieldWhenWaiting
-   * Referenced by: '<Root>/Analog Input'
+  /* Mask Parameter: EncoderInput_YieldWhenWaiting
+   * Referenced by: '<S3>/Encoder Input'
    */
   0.0,
 
-  /* Mask Parameter: EncoderInput_YieldWhenWaiting
-   * Referenced by: '<Root>/Encoder Input'
+  /* Mask Parameter: AnalogInput_YieldWhenWaiting
+   * Referenced by: '<S3>/Analog Input'
    */
   0.0,
 
   /* Mask Parameter: AnalogOutput_YieldWhenWaiting
-   * Referenced by: '<Root>/Analog Output'
+   * Referenced by: '<S3>/Analog Output'
    */
   0.0,
 
   /* Mask Parameter: IntervalTest_lowlimit
-   * Referenced by: '<S6>/Lower Limit'
+   * Referenced by: '<S7>/Lower Limit'
    */
-  -0.5,
+  0.2,
 
   /* Mask Parameter: IntervalTest_uplimit
-   * Referenced by: '<S6>/Upper Limit'
+   * Referenced by: '<S7>/Upper Limit'
    */
-  0.5,
-
-  /* Mask Parameter: AnalogInput_Channels
-   * Referenced by: '<Root>/Analog Input'
-   */
-  { 2, 3 },
+  0.7,
 
   /* Mask Parameter: EncoderInput_Channels
-   * Referenced by: '<Root>/Encoder Input'
+   * Referenced by: '<S3>/Encoder Input'
    */
   0,
 
+  /* Mask Parameter: AnalogInput_Channels
+   * Referenced by: '<S3>/Analog Input'
+   */
+  { 2, 3 },
+
   /* Mask Parameter: AnalogOutput_Channels
-   * Referenced by: '<Root>/Analog Output'
+   * Referenced by: '<S3>/Analog Output'
    */
   0,
 
   /* Mask Parameter: AnalogInput_RangeMode
-   * Referenced by: '<Root>/Analog Input'
+   * Referenced by: '<S3>/Analog Input'
    */
   0,
 
   /* Mask Parameter: AnalogOutput_RangeMode
-   * Referenced by: '<Root>/Analog Output'
+   * Referenced by: '<S3>/Analog Output'
    */
   0,
 
   /* Mask Parameter: AnalogInput_VoltRange
-   * Referenced by: '<Root>/Analog Input'
+   * Referenced by: '<S3>/Analog Input'
    */
   1,
 
   /* Mask Parameter: AnalogOutput_VoltRange
-   * Referenced by: '<Root>/Analog Output'
+   * Referenced by: '<S3>/Analog Output'
    */
   0,
 
   /* Computed Parameter: Out_Y0
-   * Referenced by: '<S5>/Out'
+   * Referenced by: '<S6>/Out'
    */
   0.0,
 
   /* Computed Parameter: DiscreteTimeIntegrator_gainval
-   * Referenced by: '<S5>/Discrete-Time Integrator'
+   * Referenced by: '<S6>/Discrete-Time Integrator'
    */
-  0.001,
+  0.002,
 
   /* Expression: 0
-   * Referenced by: '<S5>/Discrete-Time Integrator'
+   * Referenced by: '<S6>/Discrete-Time Integrator'
    */
   0.0,
 
@@ -251,52 +251,52 @@ P_realtsim_T realtsim_P = {
   -12.0,
 
   /* Expression: 1
-   * Referenced by: '<Root>/Step'
+   * Referenced by: '<Root>/Step2'
    */
   1.0,
 
   /* Expression: 0
-   * Referenced by: '<Root>/Step'
+   * Referenced by: '<Root>/Step2'
    */
   0.0,
 
   /* Expression: 50
-   * Referenced by: '<Root>/Step'
+   * Referenced by: '<Root>/Step2'
    */
   50.0,
 
   /* Computed Parameter: realderivative1_A
-   * Referenced by: '<S3>/real derivative1'
+   * Referenced by: '<S4>/real derivative1'
    */
   { -444.2882938158366, -98696.044010893587 },
 
   /* Computed Parameter: realderivative1_C
-   * Referenced by: '<S3>/real derivative1'
+   * Referenced by: '<S4>/real derivative1'
    */
   { 98696.044010893587, 0.0 },
 
   /* Computed Parameter: realderivative2_A
-   * Referenced by: '<S3>/real derivative2'
+   * Referenced by: '<S4>/real derivative2'
    */
   { -444.2882938158366, -98696.044010893587 },
 
   /* Computed Parameter: realderivative2_C
-   * Referenced by: '<S3>/real derivative2'
+   * Referenced by: '<S4>/real derivative2'
    */
   { 98696.044010893587, 0.0 },
 
-  /* Expression: 0
-   * Referenced by: '<Root>/Step1'
+  /* Expression: 0.53
+   * Referenced by: '<Root>/Step3'
    */
-  0.0,
+  0.53,
 
   /* Expression: 0
-   * Referenced by: '<Root>/Step1'
+   * Referenced by: '<Root>/Step3'
    */
   0.0,
 
   /* Expression: 50
-   * Referenced by: '<Root>/Step1'
+   * Referenced by: '<Root>/Step3'
    */
   50.0
 };

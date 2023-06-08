@@ -86,11 +86,11 @@
                     section.data(11).logicalSrcIdx = 11;
                     section.data(11).dtTransOffset = 16;
 
-                    ;% realtsim_P.AnalogInput_MaxMissedTicks
+                    ;% realtsim_P.EncoderInput_MaxMissedTicks
                     section.data(12).logicalSrcIdx = 12;
                     section.data(12).dtTransOffset = 17;
 
-                    ;% realtsim_P.EncoderInput_MaxMissedTicks
+                    ;% realtsim_P.AnalogInput_MaxMissedTicks
                     section.data(13).logicalSrcIdx = 13;
                     section.data(13).dtTransOffset = 18;
 
@@ -98,11 +98,11 @@
                     section.data(14).logicalSrcIdx = 14;
                     section.data(14).dtTransOffset = 19;
 
-                    ;% realtsim_P.AnalogInput_YieldWhenWaiting
+                    ;% realtsim_P.EncoderInput_YieldWhenWaiting
                     section.data(15).logicalSrcIdx = 15;
                     section.data(15).dtTransOffset = 20;
 
-                    ;% realtsim_P.EncoderInput_YieldWhenWaiting
+                    ;% realtsim_P.AnalogInput_YieldWhenWaiting
                     section.data(16).logicalSrcIdx = 16;
                     section.data(16).dtTransOffset = 21;
 
@@ -125,13 +125,13 @@
             section.nData     = 7;
             section.data(7)  = dumData; %prealloc
 
-                    ;% realtsim_P.AnalogInput_Channels
+                    ;% realtsim_P.EncoderInput_Channels
                     section.data(1).logicalSrcIdx = 20;
                     section.data(1).dtTransOffset = 0;
 
-                    ;% realtsim_P.EncoderInput_Channels
+                    ;% realtsim_P.AnalogInput_Channels
                     section.data(2).logicalSrcIdx = 21;
-                    section.data(2).dtTransOffset = 2;
+                    section.data(2).dtTransOffset = 1;
 
                     ;% realtsim_P.AnalogOutput_Channels
                     section.data(3).logicalSrcIdx = 22;
@@ -192,15 +192,15 @@
                     section.data(8).logicalSrcIdx = 34;
                     section.data(8).dtTransOffset = 7;
 
-                    ;% realtsim_P.Step_Time
+                    ;% realtsim_P.Step2_Time
                     section.data(9).logicalSrcIdx = 35;
                     section.data(9).dtTransOffset = 8;
 
-                    ;% realtsim_P.Step_Y0
+                    ;% realtsim_P.Step2_Y0
                     section.data(10).logicalSrcIdx = 36;
                     section.data(10).dtTransOffset = 9;
 
-                    ;% realtsim_P.Step_YFinal
+                    ;% realtsim_P.Step2_YFinal
                     section.data(11).logicalSrcIdx = 37;
                     section.data(11).dtTransOffset = 10;
 
@@ -220,15 +220,15 @@
                     section.data(15).logicalSrcIdx = 41;
                     section.data(15).dtTransOffset = 17;
 
-                    ;% realtsim_P.Step1_Time
+                    ;% realtsim_P.Step3_Time
                     section.data(16).logicalSrcIdx = 42;
                     section.data(16).dtTransOffset = 19;
 
-                    ;% realtsim_P.Step1_Y0
+                    ;% realtsim_P.Step3_Y0
                     section.data(17).logicalSrcIdx = 43;
                     section.data(17).dtTransOffset = 20;
 
-                    ;% realtsim_P.Step1_YFinal
+                    ;% realtsim_P.Step3_YFinal
                     section.data(18).logicalSrcIdx = 44;
                     section.data(18).dtTransOffset = 21;
 
@@ -277,18 +277,18 @@
         ;%
         ;% Auto data (realtsim_B)
         ;%
-            section.nData     = 11;
-            section.data(11)  = dumData; %prealloc
+            section.nData     = 12;
+            section.data(12)  = dumData; %prealloc
 
-                    ;% realtsim_B.rads2rpm
+                    ;% realtsim_B.Step2
                     section.data(1).logicalSrcIdx = 0;
                     section.data(1).dtTransOffset = 0;
 
-                    ;% realtsim_B.Gain
+                    ;% realtsim_B.rads2rpm
                     section.data(2).logicalSrcIdx = 1;
                     section.data(2).dtTransOffset = 1;
 
-                    ;% realtsim_B.Sum
+                    ;% realtsim_B.pulse2deg
                     section.data(3).logicalSrcIdx = 2;
                     section.data(3).dtTransOffset = 2;
 
@@ -296,33 +296,37 @@
                     section.data(4).logicalSrcIdx = 3;
                     section.data(4).dtTransOffset = 3;
 
-                    ;% realtsim_B.pulse2deg
+                    ;% realtsim_B.Gain
                     section.data(5).logicalSrcIdx = 4;
                     section.data(5).dtTransOffset = 4;
 
-                    ;% realtsim_B.Step1
+                    ;% realtsim_B.Sum
                     section.data(6).logicalSrcIdx = 5;
                     section.data(6).dtTransOffset = 5;
 
-                    ;% realtsim_B.deg2rad1
+                    ;% realtsim_B.Step3
                     section.data(7).logicalSrcIdx = 6;
                     section.data(7).dtTransOffset = 6;
 
-                    ;% realtsim_B.deg2rad
+                    ;% realtsim_B.deg2rad1
                     section.data(8).logicalSrcIdx = 7;
                     section.data(8).dtTransOffset = 7;
 
-                    ;% realtsim_B.Saturation
+                    ;% realtsim_B.deg2rad
                     section.data(9).logicalSrcIdx = 8;
                     section.data(9).dtTransOffset = 8;
 
-                    ;% realtsim_B.Gain_p
+                    ;% realtsim_B.Saturation
                     section.data(10).logicalSrcIdx = 9;
                     section.data(10).dtTransOffset = 9;
 
-                    ;% realtsim_B.DiscreteTimeIntegrator
+                    ;% realtsim_B.Gain_c
                     section.data(11).logicalSrcIdx = 10;
                     section.data(11).dtTransOffset = 10;
+
+                    ;% realtsim_B.DiscreteTimeIntegrator
+                    section.data(12).logicalSrcIdx = 11;
+                    section.data(12).dtTransOffset = 11;
 
             nTotData = nTotData + section.nData;
             sigMap.sections(1) = section;
@@ -332,7 +336,7 @@
             section.data(1)  = dumData; %prealloc
 
                     ;% realtsim_B.AND
-                    section.data(1).logicalSrcIdx = 11;
+                    section.data(1).logicalSrcIdx = 12;
                     section.data(1).dtTransOffset = 0;
 
             nTotData = nTotData + section.nData;
@@ -391,40 +395,52 @@
             dworkMap.sections(1) = section;
             clear section
 
-            section.nData     = 8;
-            section.data(8)  = dumData; %prealloc
+            section.nData     = 11;
+            section.data(11)  = dumData; %prealloc
 
-                    ;% realtsim_DW.AnalogInput_PWORK
+                    ;% realtsim_DW.EncoderInput_PWORK
                     section.data(1).logicalSrcIdx = 1;
                     section.data(1).dtTransOffset = 0;
 
-                    ;% realtsim_DW.EncoderInput_PWORK
+                    ;% realtsim_DW.AnalogInput_PWORK
                     section.data(2).logicalSrcIdx = 2;
                     section.data(2).dtTransOffset = 1;
 
-                    ;% realtsim_DW.AnalogOutput_PWORK
+                    ;% realtsim_DW.Scope_PWORK.LoggedData
                     section.data(3).logicalSrcIdx = 3;
                     section.data(3).dtTransOffset = 2;
 
-                    ;% realtsim_DW.Scope_PWORK.LoggedData
+                    ;% realtsim_DW.Scope1_PWORK.LoggedData
                     section.data(4).logicalSrcIdx = 4;
                     section.data(4).dtTransOffset = 3;
 
-                    ;% realtsim_DW.Scope_PWORK_j.LoggedData
-                    section.data(5).logicalSrcIdx = 5;
-                    section.data(5).dtTransOffset = 4;
-
-                    ;% realtsim_DW.Scope1_PWORK.LoggedData
-                    section.data(6).logicalSrcIdx = 6;
-                    section.data(6).dtTransOffset = 5;
-
                     ;% realtsim_DW.Scope2_PWORK.LoggedData
+                    section.data(5).logicalSrcIdx = 5;
+                    section.data(5).dtTransOffset = 6;
+
+                    ;% realtsim_DW.wff_PWORK.LoggedData
+                    section.data(6).logicalSrcIdx = 6;
+                    section.data(6).dtTransOffset = 7;
+
+                    ;% realtsim_DW.AnalogOutput_PWORK
                     section.data(7).logicalSrcIdx = 7;
-                    section.data(7).dtTransOffset = 6;
+                    section.data(7).dtTransOffset = 8;
+
+                    ;% realtsim_DW.Scope_PWORK_f.LoggedData
+                    section.data(8).logicalSrcIdx = 8;
+                    section.data(8).dtTransOffset = 9;
+
+                    ;% realtsim_DW.Scope1_PWORK_p.LoggedData
+                    section.data(9).logicalSrcIdx = 9;
+                    section.data(9).dtTransOffset = 10;
+
+                    ;% realtsim_DW.Scope2_PWORK_m.LoggedData
+                    section.data(10).logicalSrcIdx = 10;
+                    section.data(10).dtTransOffset = 11;
 
                     ;% realtsim_DW.Scope3_PWORK.LoggedData
-                    section.data(8).logicalSrcIdx = 8;
-                    section.data(8).dtTransOffset = 7;
+                    section.data(11).logicalSrcIdx = 11;
+                    section.data(11).dtTransOffset = 12;
 
             nTotData = nTotData + section.nData;
             dworkMap.sections(2) = section;
@@ -433,12 +449,12 @@
             section.nData     = 2;
             section.data(2)  = dumData; %prealloc
 
-                    ;% realtsim_DW.EnabledSubsystem_SubsysRanBC
-                    section.data(1).logicalSrcIdx = 9;
+                    ;% realtsim_DW.StateSpaceController_SubsysRanBC
+                    section.data(1).logicalSrcIdx = 12;
                     section.data(1).dtTransOffset = 0;
 
-                    ;% realtsim_DW.EnabledSubsystem_SubsysRanBC_g
-                    section.data(2).logicalSrcIdx = 10;
+                    ;% realtsim_DW.EnabledSubsystem_SubsysRanBC
+                    section.data(2).logicalSrcIdx = 13;
                     section.data(2).dtTransOffset = 1;
 
             nTotData = nTotData + section.nData;
@@ -448,8 +464,8 @@
             section.nData     = 1;
             section.data(1)  = dumData; %prealloc
 
-                    ;% realtsim_DW.EnabledSubsystem_MODE
-                    section.data(1).logicalSrcIdx = 11;
+                    ;% realtsim_DW.StateSpaceController_MODE
+                    section.data(1).logicalSrcIdx = 14;
                     section.data(1).dtTransOffset = 0;
 
             nTotData = nTotData + section.nData;
@@ -482,8 +498,8 @@
     ;%
 
 
-    targMap.checksum0 = 3215892544;
-    targMap.checksum1 = 3574296525;
-    targMap.checksum2 = 3732778097;
-    targMap.checksum3 = 146666970;
+    targMap.checksum0 = 1005310427;
+    targMap.checksum1 = 1248552675;
+    targMap.checksum2 = 3387333869;
+    targMap.checksum3 = 3687229227;
 
